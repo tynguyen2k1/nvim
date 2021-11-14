@@ -5,6 +5,8 @@
 -- end
 
 return require('packer').startup(function(use)
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
   -- Theme
   use 'folke/tokyonight.nvim'
   -- Status line
@@ -43,16 +45,17 @@ return require('packer').startup(function(use)
   -- Neovim LSP
   use 'neovim/nvim-lspconfig'
   -- Tab/Auto completion
+  use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
+
   -- snippets
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/vim-vsnip'
-  -- use 'L3MON4D3/LuaSnip'
-  -- use 'saadparwaiz1/cmp_luasnip'
+  -- use 'hrsh7th/cmp-vsnip'
+  -- use 'hrsh7th/vim-vsnip'
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
   use "rafamadriz/friendly-snippets" -- snippets co san
   -- lsp installer
   use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
@@ -62,11 +65,27 @@ return require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim'
   -- For nice highlighting
   use 'nvim-treesitter/nvim-treesitter'
+  -- matchup
+  use 'andymass/vim-matchup'
   -- Smooth scrolling
-  use 'karb94/neoscroll.nvim'
+  use {
+    'karb94/neoscroll.nvim',
+    config = function ()
+      require('neoscroll').setup()
+    end
+  }
+  -- Tmux navigator
+  use 'christoomey/vim-tmux-navigator'
   -- Git
   use "lewis6991/gitsigns.nvim"
   -- float terminal
   use 'akinsho/toggleterm.nvim'
+    -- Hop, use for easy motion
+  use {
+    'phaazon/hop.nvim',
+    config = function ()
+      require('hop').setup()
+    end
+  }
 
 end)
