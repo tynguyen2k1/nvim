@@ -23,8 +23,10 @@ return require('packer').startup(function(use)
   -- File explorer
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function() require'nvim-tree'.setup {} end
+    config = function ()
+      require('plugins.nvimtree').setup()
+    end,
+    requires = 'kyazdani42/nvim-web-devicons'
   }
   -- find file
   use {
@@ -34,12 +36,7 @@ return require('packer').startup(function(use)
   use 'nvim-lua/popup.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   -- Comment
-  use {
-    'numToStr/Comment.nvim',
-    config = function()
-        require('Comment').setup()
-    end
-  }
+  use 'numToStr/Comment.nvim'
   use 'JoosepAlviste/nvim-ts-context-commentstring' -- comment chuan hon
 
   -- Neovim LSP
@@ -49,7 +46,8 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
+  -- use 'hrsh7th/cmp-cmdline'
+  use 'antoinemadec/FixCursorHold.nvim'
 
   -- snippets
   -- use 'hrsh7th/cmp-vsnip'
@@ -58,13 +56,16 @@ return require('packer').startup(function(use)
   use 'saadparwaiz1/cmp_luasnip'
   use "rafamadriz/friendly-snippets" -- snippets co san
   -- lsp installer
-  use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
+  -- use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
   -- Auto pairs '', "", [], {}, (), ``
   use 'windwp/nvim-autopairs'
   -- For indent line
   use 'lukas-reineke/indent-blankline.nvim'
   -- For nice highlighting
-  use 'nvim-treesitter/nvim-treesitter'
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    -- run = ':TSUpdate'
+  }
   -- matchup
   use 'andymass/vim-matchup'
   -- Smooth scrolling
@@ -80,12 +81,32 @@ return require('packer').startup(function(use)
   use "lewis6991/gitsigns.nvim"
   -- float terminal
   use 'akinsho/toggleterm.nvim'
-    -- Hop, use for easy motion
+  -- Hop, use for easy motion
   use {
     'phaazon/hop.nvim',
+    setup = function ()
+      require("keybinds").hop()
+    end,
     config = function ()
       require('hop').setup()
     end
   }
+  -- Auto tag
+  use 'windwp/nvim-ts-autotag'
+  --change (){}[], tag
+  use 'tpope/vim-surround'
+  -- using . repeat surround.vim
+  use 'tpope/vim-repeat'
+  -- highlight current word
+  use {
+    'RRethy/vim-illuminate',
+    config = function ()
+      vim.g.Illuminate_delay = 300
+    end,
+    requires = 'neovim/nvim-lspconfig'
+  }
+
+  -- Live server
+  use 'turbio/bracey.vim'
 
 end)
