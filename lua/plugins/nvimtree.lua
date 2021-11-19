@@ -1,5 +1,7 @@
 -- following options are the default
 local tree = {}
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+
 tree.setup = {
     open_on_setup = false,
     auto_close = true,
@@ -30,7 +32,44 @@ tree.setup = {
       side = "left",
       auto_resize = false,
       mappings = {
-        custom_only = false,
+        -- key can be either a string or a table of string (lhs)
+        -- cb is the callback that will be called
+        -- mode is normal by default
+        -- default mappings
+        list = {
+            { key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit") },
+            { key = {"<2-RightMouse>", "<C-]>"},    cb = tree_cb("cd") },
+            { key = "<C-v>",                        cb = tree_cb("vsplit") },
+            { key = "<C-x>",                        cb = tree_cb("split") },
+            { key = "<C-t>",                        cb = tree_cb("tabnew") },
+            { key = "<",                            cb = tree_cb("prev_sibling") },
+            { key = ">",                            cb = tree_cb("next_sibling") },
+            { key = "P",                            cb = tree_cb("parent_node") },
+            { key = "<BS>",                         cb = tree_cb("close_node") },
+            { key = "<S-CR>",                       cb = tree_cb("close_node") },
+            { key = "<Tab>",                        cb = tree_cb("preview") },
+            { key = "K",                            cb = tree_cb("first_sibling") },
+            { key = "J",                            cb = tree_cb("last_sibling") },
+            { key = "I",                            cb = tree_cb("toggle_ignored") },
+            { key = "H",                            cb = tree_cb("toggle_dotfiles") },
+            { key = "R",                            cb = tree_cb("refresh") },
+            { key = "a",                            cb = tree_cb("create") },
+            { key = "d",                            cb = tree_cb("remove") },
+            { key = "r",                            cb = tree_cb("rename") },
+            { key = "<C-r>",                        cb = tree_cb("full_rename") },
+            { key = "x",                            cb = tree_cb("cut") },
+            { key = "c",                            cb = tree_cb("copy") },
+            { key = "p",                            cb = tree_cb("paste") },
+            { key = "y",                            cb = tree_cb("copy_name") },
+            { key = "Y",                            cb = tree_cb("copy_path") },
+            { key = "gy",                           cb = tree_cb("copy_absolute_path") },
+            { key = "[c",                           cb = tree_cb("prev_git_item") },
+            { key = "]c",                           cb = tree_cb("next_git_item") },
+            { key = "-",                            cb = tree_cb("dir_up") },
+            { key = "s",                            cb = tree_cb("system_open") },
+            { key = "q",                            cb = tree_cb("close") },
+            { key = "g?",                           cb = tree_cb("toggle_help") },
+        }
       },
     },
 }
@@ -38,7 +77,6 @@ local M = {}
 
 function M.setup()
 
-  O.termguicolors = true -- this variable must be enabled for colors to be applied properly
   G.nvim_tree_gitignore = 1 --0 by default
   G.nvim_tree_quit_on_open = 0 --0 by default, closes the tree when you open a file
   G.nvim_tree_indent_markers = 1 --0 by default, this option shows indent markers when folders are open
@@ -54,14 +92,14 @@ function M.setup()
   G.nvim_tree_create_in_closed_folder = 0 --1 by default, When creating files, sets the path of a file when cursor is on a closed folder to the parent folder when 0, and inside the folder when 1.
   G.nvim_tree_refresh_wait = 500 --1000 by default, control how often the tree can be refreshed, 1000 means the tree can be refresh once per 1000ms.
   G.nvim_tree_window_picker_exclude = {
-          filetype = {
-              'notify',
-              'packer',
-              'qf'
-          },
-          buftype = {
-              'terminal'
-          }
+    filetype = {
+        'notify',
+        'packer',
+        'qf'
+    },
+    buftype = {
+        'terminal'
+    }
   }
   -- Dictionary of buffer option names mapped to a list of option values that
   -- indicates to the window picker that the buffer's window should not be
@@ -108,46 +146,6 @@ function M.setup()
   -- Mappings for nvimtree
   vim.api.nvim_set_keymap('n', '<Leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
-  -- key can be either a string or a table of string (lhs)
-  -- cb is the callback that will be called
-  -- mode is normal by default
-  local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-  -- default mappings
-  local list = {
-      { key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit") },
-      { key = {"<2-RightMouse>", "<C-]>"},    cb = tree_cb("cd") },
-      { key = "<C-v>",                        cb = tree_cb("vsplit") },
-      { key = "<C-x>",                        cb = tree_cb("split") },
-      { key = "<C-t>",                        cb = tree_cb("tabnew") },
-      { key = "<",                            cb = tree_cb("prev_sibling") },
-      { key = ">",                            cb = tree_cb("next_sibling") },
-      { key = "P",                            cb = tree_cb("parent_node") },
-      { key = "<BS>",                         cb = tree_cb("close_node") },
-      { key = "<S-CR>",                       cb = tree_cb("close_node") },
-      { key = "<Tab>",                        cb = tree_cb("preview") },
-      { key = "K",                            cb = tree_cb("first_sibling") },
-      { key = "J",                            cb = tree_cb("last_sibling") },
-      { key = "I",                            cb = tree_cb("toggle_ignored") },
-      { key = "H",                            cb = tree_cb("toggle_dotfiles") },
-      { key = "R",                            cb = tree_cb("refresh") },
-      { key = "a",                            cb = tree_cb("create") },
-      { key = "d",                            cb = tree_cb("remove") },
-      { key = "r",                            cb = tree_cb("rename") },
-      { key = "<C-r>",                        cb = tree_cb("full_rename") },
-      { key = "x",                            cb = tree_cb("cut") },
-      { key = "c",                            cb = tree_cb("copy") },
-      { key = "p",                            cb = tree_cb("paste") },
-      { key = "y",                            cb = tree_cb("copy_name") },
-      { key = "Y",                            cb = tree_cb("copy_path") },
-      { key = "gy",                           cb = tree_cb("copy_absolute_path") },
-      { key = "[c",                           cb = tree_cb("prev_git_item") },
-      { key = "]c",                           cb = tree_cb("next_git_item") },
-      { key = "-",                            cb = tree_cb("dir_up") },
-      { key = "s",                            cb = tree_cb("system_open") },
-      { key = "q",                            cb = tree_cb("close") },
-      { key = "g?",                           cb = tree_cb("toggle_help") },
-  }
-
   local tree_view = require "nvim-tree.view"
 
   -- Add nvim_tree open callback
@@ -169,7 +167,18 @@ function M.on_open()
 end
 
 function M.on_close()
-  require("bufferline.state").set_offset(0)
+  local buf = tonumber(vim.fn.expand "<abuf>")
+  local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+  if ft == "NvimTree" and package.loaded["bufferline.state"] then
+    require("bufferline.state").set_offset(0)
+  end
+end
+
+function M.change_tree_dir(dir)
+  local lib_status_ok, lib = pcall(require, "nvim-tree.lib")
+  if lib_status_ok then
+    lib.change_dir(dir)
+  end
 end
 
 return M

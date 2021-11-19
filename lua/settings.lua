@@ -29,7 +29,7 @@ O.splitbelow = true -- force all horizontal splits to go below current window
 O.splitright = true -- force all vertical splits to go to the right of current window
 O.swapfile = false -- creates a swapfile
 O.termguicolors = true -- set term gui colors (most terminals support this)
-O.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
+-- O.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
 O.title = true -- set the title of window to the value of the titlestring
 -- O.undodir = utils.join_paths(get_cache_dir(), "undo") -- set an undo directory
 O.undofile = true -- enable persistent undo
@@ -50,3 +50,4 @@ O.scrolloff = 4 -- is one of my fav
 O.sidescrolloff = 4
 
 vim.api.nvim_command('set nofoldenable')
+vim.api.nvim_command('set nocompatible')

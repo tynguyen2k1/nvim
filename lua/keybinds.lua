@@ -6,50 +6,54 @@ local function map(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-local M = {}
 
 -- Set 'Space' key as leader key
 vim.g.mapleader = ' '
 
-
+local opts = { noremap = true, silent = true }
 -- Insert mode
 -- Undo
--- map('i', '<C-z>', '<c-o>:u', opt)
-CMD[[inoremap <c-z> <c-o>:u<CR>]]
+-- map('i', '<C-z>', '<c-o>:u', opts)
+CMD[[inoremap <silent> <c-z> <c-o>:u<CR>]]
+CMD[[imap \nn <C-O>o]]
 -- 'jk' for quitting insert mode
-map('i', 'jk', '<ESC>', opt)
+map('i', 'jk', '<ESC>', opts)
 -- 'kj' for quitting insert mode
-map('i', 'kj', '<ESC>', opt)
+map('i', 'kj', '<ESC>', opts)
 -- 'jj' for quitting insert mode
-map('i', 'jj', '<ESC>', opt)
+map('i', 'jj', '<ESC>', opts)
 -- Move current line / block with Alt-j/k ala vscode.
-map('i', '<A-j>', '<Esc>:m .+1<CR>==gi', opt)
+map('i', '<A-j>', '<Esc>:m .+1<CR>==gi', opts)
 -- Move current line / block with Alt-j/k ala vscode.
-map('i', '<A-k>', '<Esc>:m .-2<CR>==gi', opt)
+map('i', '<A-k>', '<Esc>:m .-2<CR>==gi', opts)
 -- navigation
-map('i', '<A-Up>', '<C-\\><C-N><C-w>k', opt)
-map('i', '<A-Down>', '<C-\\><C-N><C-w>j', opt)
-map('i', '<A-Left>', '<C-\\><C-N><C-w>h', opt)
-map('i', '<A-Right>', '<C-\\><C-N><C-w>l', opt)
+map('i', '<A-Up>', '<C-\\><C-N><C-w>k', opts)
+map('i', '<A-Down>', '<C-\\><C-N><C-w>j', opts)
+map('i', '<A-Left>', '<C-\\><C-N><C-w>h', opts)
+map('i', '<A-Right>', '<C-\\><C-N><C-w>l', opts)
 
 
 -- normal mode
 -- Move between windows
-map('n', '<C-h>', '<C-w>h', opt)
-map('n', '<C-j>', '<C-w>j', opt)
-map('n', '<C-k>', '<C-w>k', opt)
-map('n', '<C-l>', '<C-w>l', opt)
+map('n', '<C-h>', '<C-w>h', opts)
+map('n', '<C-j>', '<C-w>j', opts)
+map('n', '<C-k>', '<C-w>k', opts)
+map('n', '<C-l>', '<C-w>l', opts)
 
 -- Buffer
 -- Add new buffer and move to it
-map('n', '<C-n>', ':tabnew ', { silent = false })
+map('n', '<C-n>', ':tabnew ', { noremap = true ,silent = false })
 -- Buffer pick functionality
-map('n', '<Leader>b', ':BufferPick<CR>', opt)
+map('n', '<Leader>b', ':BufferPick<CR>', opts)
+-- Pin/unpin buffer
+map('n', '<A-p>', ':BufferPin<CR>', opts)
+-- Close buffer
+map('n', '<A-c>', ':BufferClose<CR>', opts)
 -- Remove a buffer
-map('n', '<C-w>', ':bd<CR>', opt)
+-- map('n', '<C-w>', ':BufferClose<CR>', opts)
 -- Switch among buffers
-map('n', '<TAB>', ':bnext<CR>', opt)
-map('n', '<S-TAB>', ':bprevious<CR>', opt)
+map('n', '<TAB>', ':BufferNext<CR>', opts)
+map('n', '<S-TAB>', ':BufferPrevious<CR>', opts)
 -- Goto buffer in position...
 map('n', '<A-1>', ':BufferGoto 1<CR>', opts)
 map('n', '<A-2>', ':BufferGoto 2<CR>', opts)
@@ -68,15 +72,16 @@ map('n', '<leader>bl', ':BufferOrderByLanguage<CR>', opts)
 
 
 -- Save & quit
-map('n', '<C-s>', ':w<cr>', opt)
-map('n', '<C-q>', ':q<cr>', opt)
+map('n', '<C-s>', ':w<cr>', opts)
+map('n', '<C-q>', ':q<cr>', opts)
 
 -- Resize with arrows
-map('n', '<C-Up>', ':resize -2<CR>', { noremap = true, silent = true })
-map('n', '<C-Down>', ':resize +2<CR>', { noremap = true, silent = true })
-map('n', '<C-Left>', ':vertical resize -2<CR>', { noremap = true, silent = true })
-map('n', '<C-Right>', ':vertical resize +2<CR>', { noremap = true, silent = true })
+map('n', '<C-Up>', ':resize -2<CR>', opts)
+map('n', '<C-Down>', ':resize +2<CR>', opts)
+map('n', '<C-Left>', ':vertical resize -2<CR>', opts)
+map('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 
+local M = {}
 
 M.hop = function ()
     map("n", "<space>w", ":HopWord <CR>")

@@ -41,6 +41,13 @@ return require('packer').startup(function(use)
 
   -- Neovim LSP
   use 'neovim/nvim-lspconfig'
+  -- use {
+  --   'jose-elias-alvarez/null-ls.nvim',
+  --   config = function ()
+  --     require('plugins.null-ls').setup()
+  --   end,
+  --   requires = 'nvim-lua/plenary.nvim'
+  -- }
   -- Tab/Auto completion
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-nvim-lsp'
@@ -56,7 +63,7 @@ return require('packer').startup(function(use)
   use 'saadparwaiz1/cmp_luasnip'
   use "rafamadriz/friendly-snippets" -- snippets co san
   -- lsp installer
-  -- use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
+  use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
   -- Auto pairs '', "", [], {}, (), ``
   use 'windwp/nvim-autopairs'
   -- For indent line
@@ -67,7 +74,12 @@ return require('packer').startup(function(use)
     -- run = ':TSUpdate'
   }
   -- matchup
-  use 'andymass/vim-matchup'
+  use {
+    'andymass/vim-matchup',
+    config = function ()
+      require("plugins.vim-matchup").config()
+    end
+  }
   -- Smooth scrolling
   use {
     'karb94/neoscroll.nvim',
@@ -102,6 +114,11 @@ return require('packer').startup(function(use)
     'RRethy/vim-illuminate',
     config = function ()
       vim.g.Illuminate_delay = 300
+      vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
+      vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
+      vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
+      -- vim.api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
+      -- vim.api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
     end,
     requires = 'neovim/nvim-lspconfig'
   }
