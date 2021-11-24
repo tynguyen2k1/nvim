@@ -1,3 +1,4 @@
+local vim = vim
 local function map(mode, lhs, rhs, opts)
     local options = {noremap = true}
     if opts then
@@ -22,6 +23,7 @@ CMD[[imap \nn <C-O>o]]
 -- map('i', 'kj', '<ESC>', opts)
 -- -- 'jj' for quitting insert mode
 -- map('i', 'jj', '<ESC>', opts)
+
 -- Move current line / block with Alt-j/k ala vscode.
 map('i', '<A-j>', '<Esc>:m .+1<CR>==gi', opts)
 -- Move current line / block with Alt-j/k ala vscode.
@@ -43,17 +45,23 @@ map('n', '<C-l>', '<C-w>l', opts)
 -- Buffer
 -- Add new buffer and move to it
 map('n', '<C-n>', ':tabnew ', { noremap = true ,silent = false })
+
 -- Buffer pick functionality
 map('n', '<Leader>b', ':BufferPick<CR>', opts)
+
 -- Pin/unpin buffer
 -- map('n', '<A-p>', ':BufferPin<CR>', opts)
+
 -- Close buffer
 map('n', '<A-c>', ':BufferClose<CR>', opts)
+
 -- Remove a buffer
 -- map('n', '<C-w>', ':BufferClose<CR>', opts)
+
 -- Switch among buffers
 map('n', '<TAB>', ':BufferNext<CR>', opts)
 map('n', '<S-TAB>', ':BufferPrevious<CR>', opts)
+
 -- Goto buffer in position...
 map('n', '<A-1>', ':BufferGoto 1<CR>', opts)
 map('n', '<A-2>', ':BufferGoto 2<CR>', opts)
@@ -65,6 +73,7 @@ map('n', '<A-7>', ':BufferGoto 7<CR>', opts)
 map('n', '<A-8>', ':BufferGoto 8<CR>', opts)
 map('n', '<A-9>', ':BufferGoto 9<CR>', opts)
 map('n', '<A-0>', ':BufferLast<CR>', opts)
+
 -- Sort automatically by...
 map('n', '<leader>bb', ':BufferOrderByBufferNumber<CR>', opts)
 map('n', '<leader>bd', ':BufferOrderByDirectory<CR>', opts)
@@ -84,12 +93,46 @@ map('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 -- Outline
 map("n", "<leader>a", ":SymbolsOutline <CR>", opts)
 
-local M = {}
+-- ToggleTerm
+-- map("n", "<C-t>", ":ToggleTerm dir=%:p:h<CR>")
+-- map("t", "<C-t>", ":ToggleTerm dir=%:p:h<CR>")
+map("n", "v:count1 <C-t>", ":v:count1" .. "\"ToggleTerm\"<CR>")
+map("v", "v:count1 <C-t>", ":v:count1" .. "\"ToggleTerm\"<CR>")
 
-M.hop = function ()
-    map("n", "<space>w", ":HopWord <CR>")
-    map("n", "<space>l", ":HopLine <CR>")
-    map("n", "<space>/", ":HopPattern <CR>")
-end
+-- Code formatter.
+-- map("n", "<leader>fr", ":Neoformat<CR>", opts)
 
-return M
+-- Hop.
+map("n", "<space>w", ":HopWord <CR>")
+map("n", "<space>l", ":HopLine <CR>")
+map("n", "<space>/", ":HopPattern <CR>")
+
+-- Vim-illuminate
+map('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', opts)
+map('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', opts)
+
+-- Lsp
+
+map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+map('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+map('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+map('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+map('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+map('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+map('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+map('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+--   map('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+map('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+map('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+map('n', '<space>q', '<cmd>lua via.lsp.diagnostic.set_loclist()<CR>', opts)
+map('n', '<space>fo', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+-- Mappings for nvimtree
+map('n', '<Leader>e', ':NvimTreeToggle<CR>', opts)
+
+-- Lazygit
+map("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", opts)
