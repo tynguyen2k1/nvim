@@ -16,12 +16,12 @@ local opts = { noremap = true, silent = true }
 -- map('i', '<C-z>', '<c-o>:u', opts)
 CMD[[inoremap <silent> <c-z> <c-o>:u<CR>]]
 CMD[[imap \nn <C-O>o]]
--- 'jk' for quitting insert mode
-map('i', 'jk', '<ESC>', opts)
--- 'kj' for quitting insert mode
-map('i', 'kj', '<ESC>', opts)
--- 'jj' for quitting insert mode
-map('i', 'jj', '<ESC>', opts)
+-- -- 'jk' for quitting insert mode
+-- map('i', 'jk', '<ESC>', opts)
+-- -- 'kj' for quitting insert mode
+-- map('i', 'kj', '<ESC>', opts)
+-- -- 'jj' for quitting insert mode
+-- map('i', 'jj', '<ESC>', opts)
 -- Move current line / block with Alt-j/k ala vscode.
 map('i', '<A-j>', '<Esc>:m .+1<CR>==gi', opts)
 -- Move current line / block with Alt-j/k ala vscode.
@@ -46,7 +46,7 @@ map('n', '<C-n>', ':tabnew ', { noremap = true ,silent = false })
 -- Buffer pick functionality
 map('n', '<Leader>b', ':BufferPick<CR>', opts)
 -- Pin/unpin buffer
-map('n', '<A-p>', ':BufferPin<CR>', opts)
+-- map('n', '<A-p>', ':BufferPin<CR>', opts)
 -- Close buffer
 map('n', '<A-c>', ':BufferClose<CR>', opts)
 -- Remove a buffer
@@ -80,6 +80,9 @@ map('n', '<C-Up>', ':resize -2<CR>', opts)
 map('n', '<C-Down>', ':resize +2<CR>', opts)
 map('n', '<C-Left>', ':vertical resize -2<CR>', opts)
 map('n', '<C-Right>', ':vertical resize +2<CR>', opts)
+
+-- Outline
+map("n", "<leader>a", ":SymbolsOutline <CR>", opts)
 
 local M = {}
 
