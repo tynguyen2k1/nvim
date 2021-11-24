@@ -4,7 +4,6 @@ A great start with vim for a newbie like me 😛
 
 
 ## Contents
-- [Contents](#contents)
 - [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Install](#install)
