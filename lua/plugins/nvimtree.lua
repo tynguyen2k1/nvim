@@ -143,9 +143,6 @@ function M.setup()
       },
   }
 
-  -- Mappings for nvimtree
-  vim.api.nvim_set_keymap('n', '<Leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-
   local tree_view = require "nvim-tree.view"
 
   -- Add nvim_tree open callback
