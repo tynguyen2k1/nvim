@@ -40,8 +40,8 @@ return require('packer').startup(function(use)
   use 'nvim-lua/popup.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   -- Comment
-  use {'numToStr/Comment.nvim', opt = true}
-  use {'JoosepAlviste/nvim-ts-context-commentstring', opt = true} -- comment chuan hon
+  use {'numToStr/Comment.nvim'}
+  use {'JoosepAlviste/nvim-ts-context-commentstring'} -- comment chuan hon
 
   -- Neovim LSP
   use {
@@ -101,9 +101,9 @@ return require('packer').startup(function(use)
   -- Tmux navigator
   use 'christoomey/vim-tmux-navigator'
   -- Git
-  use {"lewis6991/gitsigns.nvim", opt = true}
+  use {"lewis6991/gitsigns.nvim",}
   -- float terminal
-  use {'akinsho/toggleterm.nvim', opt = true}
+  use {'akinsho/toggleterm.nvim',}
   -- Hop, use for easy motion
   use {
     'phaazon/hop.nvim',
@@ -124,24 +124,31 @@ return require('packer').startup(function(use)
   use {
     'RRethy/vim-illuminate',
     config = function ()
-      vim.g.Illuminate_delay = 300
-      vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
-      vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
-      vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
+        require('plugins.vim-illuminate').setup()
     end,
     requires = 'neovim/nvim-lspconfig'
   }
 
   -- Live server
-  use {'turbio/bracey.vim', opt = true}
+  use {'turbio/bracey.vim', opt = true, cmd = {'Bracey'}}
   -- Outline
-  use 'simrat39/symbols-outline.nvim'
+  use {
+    'simrat39/symbols-outline.nvim',
+    config = function ()
+      require('plugins.symbols-outline').config()
+    end
+  }
   -- Show function
   use {
     "ray-x/lsp_signature.nvim",
     config = function ()
       require('plugins.lsp_signature').setup()
     end
+  }
+  -- Code formatter.
+  use {
+    "sbdchd/neoformat",
+    cmd = "Neoformat"
   }
   --
   -- use {
