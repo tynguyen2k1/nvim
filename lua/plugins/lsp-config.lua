@@ -1,3 +1,4 @@
+local M = {}
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -14,6 +15,11 @@ local on_attach = function(client, bufnr)
 
   -- highlight current word
   require 'illuminate'.on_attach(client)
+  buf_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', opts)
+  buf_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', opts)
+
+  -- Show function
+  require "lsp_signature".on_attach()
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -36,6 +42,8 @@ local on_attach = function(client, bufnr)
 
 end
 
+M.on_attach = on_attach
+
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
@@ -53,44 +61,48 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
       "additionalTextEdits",
    },
 }
+M.capabilities = capabilities
 
--- replace the default lsp diagnostic symbols
-local function lspSymbol(name, icon)
-   vim.fn.sign_define("LspDiagnosticsSign" .. name, { text = icon, numhl = "LspDiagnosticsDefault" .. name })
-end
+function M.config()
 
-lspSymbol("Error", "")
-lspSymbol("Information", "")
-lspSymbol("Hint", "")
-lspSymbol("Warning", "")
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-   vim.lsp.diagnostic.on_publish_diagnostics,{
-   virtual_text = {
-      prefix = "",
-      spacing = 0,
-   },
-   signs = true,
-   underline = true,
-   update_in_insert = false, -- update diagnostics insert mode
-})
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-   border = "single",
-})
-
--- suppress error messages from lang servers
-vim.notify = function(msg, log_level, _opts)
-   if msg:match "exit code" then
-      return
+   -- replace the default lsp diagnostic symbols
+   local function lspSymbol(name, icon)
+      vim.fn.sign_define("LspDiagnosticsSign" .. name, { text = icon, numhl = "LspDiagnosticsDefault" .. name })
    end
-   if log_level == vim.log.levels.ERROR then
-      vim.api.nvim_err_writeln(msg)
-   else
-      vim.api.nvim_echo({ { msg } }, true, {})
-   end
-end
 
+   lspSymbol("Error", "")
+   lspSymbol("Information", "")
+   lspSymbol("Hint", "")
+   lspSymbol("Warning", "")
+
+   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics,{
+      virtual_text = {
+         prefix = "●",
+         spacing = 0,
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = false, -- update diagnostics insert mode
+   })
+
+   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = "single",
+   })
+
+   -- suppress error messages from lang servers
+   vim.notify = function(msg, log_level, _opts)
+      if msg:match "exit code" then
+         return
+      end
+      if log_level == vim.log.levels.ERROR then
+         vim.api.nvim_err_writeln(msg)
+      else
+         vim.api.nvim_echo({ { msg } }, true, {})
+      end
+   end
+
+end
 
 
 
@@ -104,13 +116,18 @@ local servers = {
   'html',
   'cssls',
   'intelephense',
-  'clangd'
+  'clangd',
+  'bashls'
 }
+M.server = servers
 
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    root_dir = vim.loop.cwd,
-    capabilities = capabilities,
-  }
-end
+-- for _, lsp in ipairs(servers) do
+--   nvim_lsp[lsp].setup {
+--     on_attach = on_attach,
+--     root_dir = vim.loop.cwd,
+--     capabilities = capabilities,
+--   }
+-- end
+-- M.config()
+
+return M
