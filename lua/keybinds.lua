@@ -112,7 +112,6 @@ map('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', 
 map('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', opts)
 
 -- Lsp
-
 map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -125,14 +124,26 @@ map('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
 map('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 map('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
---   map('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+map('n', '<space>x', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
 map('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua via.lsp.diagnostic.set_loclist()<CR>', opts)
-map('n', '<space>fo', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+map('n', '<space>fr', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
 -- Mappings for nvimtree
 map('n', '<Leader>e', ':NvimTreeToggle<CR>', opts)
 
 -- Lazygit
 map("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", opts)
+
+-- Telescop.
+map("n", "<Leader>fw", ":Telescope live_grep<CR>")
+map("n", "<Leader>gt", ":Telescope git_status<CR>")
+map("n", "<Leader>cm", ":Telescope git_commits<CR>")
+map("n", "<Leader>ff", ":Telescope find_files find_command=rg,--follow,--hidden,--files<CR>")
+map("n", "<Leader>fd", ":Telescope find_directories<CR>")
+map("n", "<Leader>fp", ":Telescope media_files<CR>")
+map("n", "<Leader>fb", ":Telescope buffers<CR>")
+map("n", "<Leader>fh", ":Telescope help_tags<CR>")
+map("n", "<Leader>fo", ":Telescope oldfiles<CR>")
+map("n", "<Leader>th", ":Telescope colorscheme<CR>")
