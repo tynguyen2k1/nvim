@@ -67,10 +67,7 @@ return require('packer').startup(function(use)
   -- use 'hrsh7th/cmp-vsnip'
   -- use 'hrsh7th/vim-vsnip'
   use 'L3MON4D3/LuaSnip'
-  use {
-    "saadparwaiz1/cmp_luasnip",
-    after = "LuaSnip"
-  }
+  use "saadparwaiz1/cmp_luasnip"
   use "rafamadriz/friendly-snippets" -- snippets co san
   -- lsp installer
   use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
@@ -107,9 +104,6 @@ return require('packer').startup(function(use)
   -- Hop, use for easy motion
   use {
     'phaazon/hop.nvim',
-    setup = function ()
-      require("keybinds").hop()
-    end,
     config = function ()
       require('hop').setup()
     end
@@ -149,6 +143,18 @@ return require('packer').startup(function(use)
   use {
     "sbdchd/neoformat",
     cmd = "Neoformat"
+  }
+  -- Stable buffer when opening windows
+  use {
+	"luukvbaal/stabilize.nvim",
+	config = function()
+        require("stabilize").setup()
+    end
+  }
+  --
+  use {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle"
   }
   --
   -- use {
