@@ -1,8 +1,8 @@
 require('lualine').setup{
     options = {
-        theme = "auto",
+        theme = 'tokyonight',
         disabled_filetypes = {
-          "toggleterm",
+          -- "toggleterm",
           "NvimTree",
           "vista_kind",
           "dapui_scopes",
