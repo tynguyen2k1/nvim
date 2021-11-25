@@ -7,23 +7,27 @@
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
+
   -- Theme
   use 'folke/tokyonight.nvim'
+
   -- Status line
-  -- use {
-  --   'glepnir/galaxyline.nvim',
-  --     branch = 'main',
-  --     -- some optional icons
-  --     requires = {'kyazdani42/nvim-web-devicons', opt = true}
-  -- }
   use {
     'nvim-lualine/lualine.nvim',
+    config = function ()
+      require('plugins.lualine')
+    end,
     requires = {'kyazdani42/nvim-web-devicons', opt = true}
   }
+
   -- Buffer
-  use {"romgrk/barbar.nvim"}
-  -- For hex color
-  use 'norcalli/nvim-colorizer.lua'
+  use {
+    "romgrk/barbar.nvim",
+    config = function ()
+      require('plugins.bufferline')
+    end
+  }
+
   -- File explorer
   use {
     'kyazdani42/nvim-tree.lua',
@@ -32,15 +36,25 @@ return require('packer').startup(function(use)
     end,
     requires = 'kyazdani42/nvim-web-devicons'
   }
-  -- find file
+
+  -- Find file
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    config = function ()
+      require('plugins.telescope')
+    end,
+    requires = 'nvim-lua/plenary.nvim'
   }
   use 'nvim-lua/popup.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+
   -- Comment
-  use {'numToStr/Comment.nvim'}
+  use {
+    'numToStr/Comment.nvim',
+    config = function ()
+      require('plugins.comment')
+    end
+  }
   use {'JoosepAlviste/nvim-ts-context-commentstring'} -- comment chuan hon
 
   -- Neovim LSP
@@ -48,15 +62,22 @@ return require('packer').startup(function(use)
     'neovim/nvim-lspconfig',
     config = require('plugins.lsp-config').config()
   }
-  -- use {
-  --   'jose-elias-alvarez/null-ls.nvim',
-  --   config = function ()
-  --     require('plugins.null-ls').setup()
-  --   end,
-  --   requires = 'nvim-lua/plenary.nvim'
-  -- }
+
+  -- Lsp installer
+  use {
+    'williamboman/nvim-lsp-installer',
+    config = function ()
+      require('plugins.lsp-installer')
+    end
+  }
+
   -- Tab/Auto completion
-  use 'hrsh7th/nvim-cmp'
+  use {
+    'hrsh7th/nvim-cmp',
+    config = function ()
+      require('plugins.nvim-cmp')
+    end
+  }
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
@@ -64,23 +85,36 @@ return require('packer').startup(function(use)
   use 'antoinemadec/FixCursorHold.nvim'
 
   -- snippets
-  -- use 'hrsh7th/cmp-vsnip'
-  -- use 'hrsh7th/vim-vsnip'
   use 'L3MON4D3/LuaSnip'
   use "saadparwaiz1/cmp_luasnip"
   use "rafamadriz/friendly-snippets" -- snippets co san
-  -- lsp installer
-  use 'williamboman/nvim-lsp-installer' -- trinh quan ly lsp
+
   -- Auto pairs '', "", [], {}, (), ``
-  use 'windwp/nvim-autopairs'
+  use {
+    'windwp/nvim-autopairs',
+    config = function ()
+      require('plugins.autopairs')
+    end
+  }
+
   -- For indent line
-  use 'lukas-reineke/indent-blankline.nvim'
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = function ()
+      require('plugins.indent-blankline')
+    end
+  }
+
   -- For nice highlighting
   use {
     'nvim-treesitter/nvim-treesitter',
     -- run = ':TSUpdate'
+    config = function ()
+      require('plugins.treesitter')
+    end
   }
-  -- matchup
+
+  -- Matchup
   use {
     'andymass/vim-matchup',
     event = 'VimEnter',
@@ -88,6 +122,7 @@ return require('packer').startup(function(use)
       require("plugins.vim-matchup").config()
     end
   }
+
   -- Smooth scrolling
   use {
     'karb94/neoscroll.nvim',
@@ -95,12 +130,26 @@ return require('packer').startup(function(use)
       require('neoscroll').setup()
     end
   }
+
   -- Tmux navigator
   use 'christoomey/vim-tmux-navigator'
+
   -- Git
-  use {"lewis6991/gitsigns.nvim",}
-  -- float terminal
-  use {'akinsho/toggleterm.nvim',}
+  use {
+    "lewis6991/gitsigns.nvim",
+    config = function ()
+      require('plugins.gitsigns')
+    end
+  }
+
+  -- Float terminal
+  use {
+    'akinsho/toggleterm.nvim',
+    config = function ()
+      require('plugins.terminal')
+    end
+  }
+
   -- Hop, use for easy motion
   use {
     'phaazon/hop.nvim',
@@ -108,12 +157,24 @@ return require('packer').startup(function(use)
       require('hop').setup()
     end
   }
+
   -- Auto tag
   use 'windwp/nvim-ts-autotag'
+
   --change (){}[], tag
   use 'tpope/vim-surround'
+
+  -- For hex color
+  use {
+    'norcalli/nvim-colorizer.lua',
+    config = function ()
+      require('plugins.colorizer')
+    end
+  }
+
   -- using . repeat surround.vim
   use 'tpope/vim-repeat'
+
   -- highlight current word
   use {
     'RRethy/vim-illuminate',
@@ -125,6 +186,7 @@ return require('packer').startup(function(use)
 
   -- Live server
   use {'turbio/bracey.vim', opt = true, cmd = {'Bracey'}}
+
   -- Outline
   use {
     'simrat39/symbols-outline.nvim',
@@ -132,6 +194,7 @@ return require('packer').startup(function(use)
       require('plugins.symbols-outline').config()
     end
   }
+
   -- Show function
   use {
     "ray-x/lsp_signature.nvim",
@@ -139,11 +202,13 @@ return require('packer').startup(function(use)
       require('plugins.lsp_signature').setup()
     end
   }
+
   -- Code formatter.
   use {
     "sbdchd/neoformat",
     cmd = "Neoformat"
   }
+
   -- Stable buffer when opening windows
   use {
 	"luukvbaal/stabilize.nvim",
@@ -151,20 +216,11 @@ return require('packer').startup(function(use)
         require("stabilize").setup()
     end
   }
-  --
+
+  -- Trouble
   use {
     "folke/trouble.nvim",
     cmd = "TroubleToggle"
   }
-  --
-  -- use {
-  --   'max397574/better-escape.nvim',
-  --   config = function()
-  --     require("better_escape").setup{
-  --       mapping = {"jk", "jj"}, -- a table with mappings to use
-  --       timeout = vim.o.timeoutlen,
-  --     }
-  --   end,
-  -- }
 
 end)
