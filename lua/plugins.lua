@@ -10,6 +10,7 @@ return require('packer').startup(function(use)
 
   -- Theme
   use 'folke/tokyonight.nvim'
+  use 'shaunsingh/nord.nvim'
 
   -- Status line
   use {
@@ -20,19 +21,20 @@ return require('packer').startup(function(use)
     requires = {'kyazdani42/nvim-web-devicons', opt = true}
   }
 
-  -- Buffer
+  -- Bufferline.
   use {
-    "romgrk/barbar.nvim",
-    config = function ()
-      require('plugins.bufferline')
-    end
+    "akinsho/nvim-bufferline.lua",
+    config  = function()
+      require("plugins/bufferline")
+    end,
+    requires = 'kyazdani42/nvim-web-devicons'
   }
 
-  -- File explorer
+  -- File explorer tree.
   use {
-    'kyazdani42/nvim-tree.lua',
-    config = function ()
-      require('plugins.nvimtree').setup()
+    "kyazdani42/nvim-tree.lua",
+    config = function()
+      require("plugins.nvimtree")
     end,
     requires = 'kyazdani42/nvim-web-devicons'
   }
@@ -48,6 +50,15 @@ return require('packer').startup(function(use)
   use 'nvim-lua/popup.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
+  -- For nice highlighting
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    -- run = ':TSUpdate'
+    config = function ()
+      require('plugins.treesitter')
+    end
+  }
+
   -- Comment
   use {
     'numToStr/Comment.nvim',
@@ -60,7 +71,7 @@ return require('packer').startup(function(use)
   -- Neovim LSP
   use {
     'neovim/nvim-lspconfig',
-    config = require('plugins.lsp-config').config()
+    config = require('plugins.lsp').config()
   }
 
   -- Lsp installer
@@ -79,6 +90,7 @@ return require('packer').startup(function(use)
     end
   }
   use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   -- use 'hrsh7th/cmp-cmdline'
@@ -102,15 +114,6 @@ return require('packer').startup(function(use)
     'lukas-reineke/indent-blankline.nvim',
     config = function ()
       require('plugins.indent-blankline')
-    end
-  }
-
-  -- For nice highlighting
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    -- run = ':TSUpdate'
-    config = function ()
-      require('plugins.treesitter')
     end
   }
 
@@ -153,6 +156,11 @@ return require('packer').startup(function(use)
   -- Hop, use for easy motion
   use {
     'phaazon/hop.nvim',
+    cmd = {
+      "HopWord",
+      "HopLine",
+      "HopPattern",
+    },
     config = function ()
       require('hop').setup()
     end
@@ -195,6 +203,15 @@ return require('packer').startup(function(use)
     end
   }
 
+  -- View and search LSP symbols, tags in Neovim.
+  -- use {
+  --   "liuchengxu/vista.vim",
+  --   cmd = "Vista",
+  --   config = function ()
+  --     require("plugins/vista")
+  --   end
+  -- }
+
   -- Show function
   use {
     "ray-x/lsp_signature.nvim",
@@ -221,6 +238,34 @@ return require('packer').startup(function(use)
   use {
     "folke/trouble.nvim",
     cmd = "TroubleToggle"
+  }
+
+  -- This plugin show trailing whitespace.
+  use {
+    "ntpeters/vim-better-whitespace",
+    config = function()
+        require("plugins/better-whitespace")
+    end
+  }
+
+  --Markdown preview
+  use({
+    "iamcco/markdown-preview.nvim",
+    cmd = {
+        "MarkdownPreview",
+        "MarkdownPreviewStop",
+    },
+    run = "cd app && npm install",
+    setup = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  })
+
+  -- Delete buffer
+  use {
+    'ojroques/nvim-bufdel',
+    cmd = "BufDel"
   }
 
 end)

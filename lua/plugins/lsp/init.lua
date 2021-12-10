@@ -23,21 +23,21 @@ M.on_attach = on_attach
 
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+-- capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-   properties = {
-      "documentation",
-      "detail",
-      "additionalTextEdits",
-   },
-}
+-- capabilities.textDocument.completion.completionItem.preselectSupport = true
+-- capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+-- capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+-- capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+-- capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+-- capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+-- capabilities.textDocument.completion.completionItem.resolveSupport = {
+--    properties = {
+--       "documentation",
+--       "detail",
+--       "additionalTextEdits",
+--    },
+-- }
 M.capabilities = capabilities
 
 function M.config()
@@ -49,7 +49,7 @@ function M.config()
 
    lspSymbol("Error", "")
    lspSymbol("Information", "")
-   lspSymbol("Hint", "")
+   lspSymbol("Hint", "")
    lspSymbol("Warning", "")
 
    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -60,7 +60,7 @@ function M.config()
       },
       signs = true,
       underline = true,
-      update_in_insert = false, -- update diagnostics insert mode
+      update_in_insert = true, -- update diagnostics insert mode
    })
 
    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -68,16 +68,16 @@ function M.config()
    })
 
    -- suppress error messages from lang servers
-   vim.notify = function(msg, log_level, _opts)
-      if msg:match "exit code" then
-         return
-      end
-      if log_level == vim.log.levels.ERROR then
-         vim.api.nvim_err_writeln(msg)
-      else
-         vim.api.nvim_echo({ { msg } }, true, {})
-      end
-   end
+   -- vim.notify = function(msg, log_level, _opts)
+   --    if msg:match "exit code" then
+   --       return
+   --    end
+   --    if log_level == vim.log.levels.ERROR then
+   --       vim.api.nvim_err_writeln(msg)
+   --    else
+   --       vim.api.nvim_echo({ { msg } }, true, {})
+   --    end
+   -- end
 
 end
 

@@ -1,3 +1,4 @@
+local vim = vim
 O = vim.o
 BO = vim.bo
 WO = vim.wo
@@ -15,7 +16,8 @@ O.conceallevel = 0 -- so that `` is visible in markdown files
 O.fileencoding = "utf-8" -- the encoding written to a file
 O.foldmethod = "manual" -- folding, set to "expr" for treesitter based folding
 O.foldexpr = "" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
-O.guifont = "monospace:h17" -- the font used in graphical neovim applications
+-- O.guifont = "JetBrains\ Mono\ Medium:h13" -- the font used in graphical neovim applications
+CMD[[ set guifont=JetBrains\ Mono\ Medium:h13 ]]
 O.hidden = true -- required to keep multiple buffers and open multiple buffers
 O.hlsearch = false -- nohighlight all matches on previous search pattern
 O.ignorecase = true -- ignore case in search patterns
@@ -40,7 +42,7 @@ O.shiftwidth = 4 -- the number of spaces inserted for each indentation
 O.tabstop = 4 -- insert 4 spaces for a tab
 O.cursorline = true -- highlight the current line
 O.number = true -- set numbered lines
-O.relativenumber = false -- set relative numbered lines
+O.relativenumber = true -- set relative numbered lines
 O.numberwidth = 4 -- set number column width to 2 {default 4}
 O.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 O.wrap = false -- display lines as one long line
@@ -51,3 +53,5 @@ O.sidescrolloff = 4
 
 vim.api.nvim_command('set nofoldenable')
 vim.api.nvim_command('set nocompatible')
+
+vim.cmd("command CodeArtTransparent lua make_codeart_transparent()")

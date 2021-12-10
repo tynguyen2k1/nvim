@@ -16,7 +16,7 @@ local opts = { noremap = true, silent = true }
 -- Undo
 -- map('i', '<C-z>', '<c-o>:u', opts)
 CMD[[inoremap <silent> <c-z> <c-o>:u<CR>]]
-CMD[[imap \nn <C-O>o]]
+-- CMD[[imap \nn <C-O>o]]
 -- -- 'jk' for quitting insert mode
 -- map('i', 'jk', '<ESC>', opts)
 -- -- 'kj' for quitting insert mode
@@ -46,38 +46,38 @@ map('n', '<C-l>', '<C-w>l', opts)
 -- Add new buffer and move to it
 map('n', '<C-n>', ':tabnew ', { noremap = true ,silent = false })
 
--- Buffer pick functionality
-map('n', '<Leader>b', ':BufferPick<CR>', opts)
-
--- Pin/unpin buffer
--- map('n', '<A-p>', ':BufferPin<CR>', opts)
-
--- Close buffer
-map('n', '<A-c>', ':BufferClose<CR>', opts)
-
--- Remove a buffer
--- map('n', '<C-w>', ':BufferClose<CR>', opts)
-
 -- Switch among buffers
-map('n', '<TAB>', ':BufferNext<CR>', opts)
-map('n', '<S-TAB>', ':BufferPrevious<CR>', opts)
+map('n', '<TAB>', ':bnext<CR>', opts)
+map('n', '<S-TAB>', ':bprevious<CR>', opts)
+
+-- Buffer switching.
+map("n", "<A-[>", ":BufferLineCyclePrev<CR>")
+map("n", "<A-]>", ":BufferLineCycleNext<CR>")
+
+-- Buffer closing.
+map('n', '<A-c>', ':BufDel<CR>', opts)
+map('n', '<leader>bd', ':BufferLinePickClose<CR>', opts)
+
+-- Buffer moving.
+map("n", "<leader>bl", ":BufferLineMoveNext<CR>")
+map("n", "<leader>bh", "::BufferLineMovePrev<CR>")
 
 -- Goto buffer in position...
-map('n', '<A-1>', ':BufferGoto 1<CR>', opts)
-map('n', '<A-2>', ':BufferGoto 2<CR>', opts)
-map('n', '<A-3>', ':BufferGoto 3<CR>', opts)
-map('n', '<A-4>', ':BufferGoto 4<CR>', opts)
-map('n', '<A-5>', ':BufferGoto 5<CR>', opts)
-map('n', '<A-6>', ':BufferGoto 6<CR>', opts)
-map('n', '<A-7>', ':BufferGoto 7<CR>', opts)
-map('n', '<A-8>', ':BufferGoto 8<CR>', opts)
-map('n', '<A-9>', ':BufferGoto 9<CR>', opts)
-map('n', '<A-0>', ':BufferLast<CR>', opts)
+map('n', '<A-1>', ':BufferLineGoToBuffer 1<CR>', opts)
+map('n', '<A-2>', ':BufferLineGoToBuffer 2<CR>', opts)
+map('n', '<A-3>', ':BufferLineGoToBuffer 3<CR>', opts)
+map('n', '<A-4>', ':BufferLineGoToBuffer 4<CR>', opts)
+map('n', '<A-5>', ':BufferLineGoToBuffer 5<CR>', opts)
+map('n', '<A-6>', ':BufferLineGoToBuffer 6<CR>', opts)
+map('n', '<A-7>', ':BufferLineGoToBuffer 7<CR>', opts)
+map('n', '<A-8>', ':BufferLineGoToBuffer 8<CR>', opts)
+map('n', '<A-9>', ':BufferLineGoToBuffer 9<CR>', opts)
+map("n", "<leader>bb", ":BufferLinePick<CR>", opts)
 
 -- Sort automatically by...
-map('n', '<leader>bb', ':BufferOrderByBufferNumber<CR>', opts)
-map('n', '<leader>bd', ':BufferOrderByDirectory<CR>', opts)
-map('n', '<leader>bl', ':BufferOrderByLanguage<CR>', opts)
+map("n", "<leader>bse", ":BufferLineSortByExtension<CR>", opts)
+map("n", "<leader>bsd", ":BufferLineSortByDirectory<CR>", opts)
+map("n", "<leader>bsn", "<cmd>lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>", opts)
 
 
 -- Save & quit
@@ -129,6 +129,11 @@ map('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua via.lsp.diagnostic.set_loclist()<CR>', opts)
 map('n', '<space>fr', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+-- map('n', "<space>fm", "<cmd>lua require('plugins.lsp').format_range_operator()<CR>", opts) -- format select
+-- Peek
+map('n', '<leader>pd', "<cmd>lua require('plugins.lsp.peek').Peek('definition')<cr>", opts)
+map('n', '<leader>pt', "<cmd>lua require('plugins.lsp.peek').Peek('typeDefinition')<cr>", opts)
+map('n', '<leader>pi', "<cmd>lua require('plugins.lsp.peek').Peek('implementation')<cr>", opts)
 
 -- Mappings for nvimtree
 map('n', '<Leader>e', ':NvimTreeToggle<CR>', opts)

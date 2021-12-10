@@ -7,8 +7,8 @@ tree.setup = {
     auto_close = true,
     open_on_tab = false,
     update_cwd = true,
-    disable_netrw = false,
-    hijack_netrw = false,
+    disable_netrw = true,
+    hijack_netrw = true,
     ignore_ft_on_setup = { '.git', 'node_modules', '.cache' },
     -- hijack the cursor in the tree to put it at the start of the filename
     hijack_cursor = true,
@@ -28,47 +28,12 @@ tree.setup = {
       },
     },
     view = {
-      width = 30,
+      width = "24%",
       side = "left",
       auto_resize = false,
       mappings = {
-        -- key can be either a string or a table of string (lhs)
-        -- cb is the callback that will be called
-        -- mode is normal by default
-        -- default mappings
         list = {
-            { key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit") },
-            { key = {"<2-RightMouse>", "<C-]>"},    cb = tree_cb("cd") },
-            { key = "<C-v>",                        cb = tree_cb("vsplit") },
-            { key = "<C-x>",                        cb = tree_cb("split") },
-            { key = "<C-t>",                        cb = tree_cb("tabnew") },
-            { key = "<",                            cb = tree_cb("prev_sibling") },
-            { key = ">",                            cb = tree_cb("next_sibling") },
-            { key = "P",                            cb = tree_cb("parent_node") },
-            { key = "<BS>",                         cb = tree_cb("close_node") },
-            { key = "<S-CR>",                       cb = tree_cb("close_node") },
-            { key = "<Tab>",                        cb = tree_cb("preview") },
-            { key = "K",                            cb = tree_cb("first_sibling") },
-            { key = "J",                            cb = tree_cb("last_sibling") },
-            { key = "I",                            cb = tree_cb("toggle_ignored") },
-            { key = "H",                            cb = tree_cb("toggle_dotfiles") },
-            { key = "R",                            cb = tree_cb("refresh") },
-            { key = "a",                            cb = tree_cb("create") },
-            { key = "d",                            cb = tree_cb("remove") },
-            { key = "r",                            cb = tree_cb("rename") },
-            { key = "<C-r>",                        cb = tree_cb("full_rename") },
-            { key = "x",                            cb = tree_cb("cut") },
-            { key = "c",                            cb = tree_cb("copy") },
-            { key = "p",                            cb = tree_cb("paste") },
-            { key = "y",                            cb = tree_cb("copy_name") },
-            { key = "Y",                            cb = tree_cb("copy_path") },
-            { key = "gy",                           cb = tree_cb("copy_absolute_path") },
-            { key = "[c",                           cb = tree_cb("prev_git_item") },
-            { key = "]c",                           cb = tree_cb("next_git_item") },
-            { key = "-",                            cb = tree_cb("dir_up") },
-            { key = "s",                            cb = tree_cb("system_open") },
-            { key = "q",                            cb = tree_cb("close") },
-            { key = "g?",                           cb = tree_cb("toggle_help") },
+          {key = "<C-h>", cb = tree_cb("toggle_dotfiles")},
         }
       },
     },
@@ -77,12 +42,12 @@ local M = {}
 
 function M.setup()
 
-  G.nvim_tree_gitignore = 1 --0 by default
+  G.nvim_tree_gitignore = { ".git", "node_modules", ".cache", "__pycache__"} --0 by default
   G.nvim_tree_quit_on_open = 0 --0 by default, closes the tree when you open a file
   G.nvim_tree_indent_markers = 1 --0 by default, this option shows indent markers when folders are open
   G.nvim_tree_git_hl = 1 --0 by default, will enable file highlight for git attributes (can be used without the icons).
   G.nvim_tree_highlight_opened_files = 1 --0 by default, will enable folder and file icon highlight for opened files/directories.
-  G.nvim_tree_root_folder_modifier = ':t' --This is the default. See :help filename-modifiers for more options
+  -- G.nvim_tree_root_folder_modifier = ':t' --This is the default. See :help filename-modifiers for more options
   G.nvim_tree_add_trailing = 1 --0 by default, append a trailing slash to folder names
   G.nvim_tree_group_empty = 1 -- 0 by default, compact folders that only contain a single folder into one node in the file tree
   G.nvim_tree_disable_window_picker = 0 --0 by default, will disable the window picker.
@@ -143,39 +108,8 @@ function M.setup()
       },
   }
 
-  local tree_view = require "nvim-tree.view"
-
-  -- Add nvim_tree open callback
-  local open = tree_view.open
-  tree_view.open = function()
-    M.on_open()
-    open()
-  end
-
-  vim.g.netrw_banner = false
-  vim.cmd "au WinClosed * lua require('plugins.nvimtree').on_close()"
-
   require("nvim-tree").setup(tree.setup)
-
 end
 
-function M.on_open()
-  require("bufferline.state").set_offset(tree.setup.view.width + 1, "")
-end
 
-function M.on_close()
-  local buf = tonumber(vim.fn.expand "<abuf>")
-  local ft = vim.api.nvim_buf_get_option(buf, "filetype")
-  if ft == "NvimTree" and package.loaded["bufferline.state"] then
-    require("bufferline.state").set_offset(0)
-  end
-end
-
-function M.change_tree_dir(dir)
-  local lib_status_ok, lib = pcall(require, "nvim-tree.lib")
-  if lib_status_ok then
-    lib.change_dir(dir)
-  end
-end
-
-return M
+M.setup()
